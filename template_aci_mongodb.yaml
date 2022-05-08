@@ -1,0 +1,50 @@
+apiVersion: '2021-10-01'
+location: eastus
+name: mongodb
+properties:
+   containers:
+   - name: mongodb
+     properties:
+       environmentVariables:
+       - name: MONGO_INITDB_DATABASE
+         value: thedbname 
+       - name: MONGO_INITDB_ROOT_USERNAME
+         value: userforthedb
+       - name: MONGO_INITDB_ROOT_PASSWORD
+         secureValue: password
+       image: debmedia.azurecr.io/mongodm:5.0.8
+       command: ['mongod', '--config','/etc/mongod.conf']
+       ports:
+       - protocol: TCP
+         port: 27017
+       resources:
+         requests:
+           cpu: 1.0
+           memoryInGB: 1.0
+       volumeMounts:
+       - name: mongo-db-preprod
+         mountPath: /data/db2
+   osType: Linux
+   restartPolicy: Always
+   ipAddress:  
+     ports:
+       - protocol: TCP
+         port: 27017
+     type: Private    
+     ip: ip 
+     #dnsNameLabel: mongodb
+   volumes:
+   - name: mongo-db
+     azureFile:
+       sharename: mongo-db-preprod
+       storageAccountName: <storageaccount_name>
+       storageAccountKey: "keystorageaccount"
+   imageRegistryCredentials:
+   - server: registry.azurecr.io
+     username: user registry
+     password: pass registry
+   subnetIds:
+      - id:  "id subnet"
+        name: "subnetname"
+tags: {}
+type: Microsoft.ContainerInstance/containerGroups
