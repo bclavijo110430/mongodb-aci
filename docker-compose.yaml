@@ -1,0 +1,13 @@
+version: '3.7'
+services:
+  mongo:
+    image: mongo:5.0.8
+    environment:
+      - MONGO_INITDB_DATABASE=thedbname
+      - MONGO_INITDB_ROOT_USERNAME=userforthedb
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    command: ['mongod', '--dbpath', '/data/db2']  
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data/mongo:/data/db2
